@@ -1,0 +1,68 @@
+﻿Checkpoint â€” 2025-11-13
+
+Summary
+
+- Refactor completed with modular pipeline (scraper, downloader with verification + SQLite state, OCR textâ€‘first + fallback, postproc). README added.
+- Chrome DevTools MCP installed globally (chrome-devtools-mcp 0.10.1). Needs client config to show up in "/mcp".
+- Infinite "Next" pagination loop fixed using page signature change detection + optional MAX_LAW_PAGES/MAX_LISTING_PAGES.
+- Defaults set to Chrome for Testing binary: C:\users\niyaz\chrome-cft-142.0.7444.162\chrome-win64\chrome.exe
+- Artifacts cleaned; repo contains only code + docs.
+
+Files of interest
+
+- config.py â€” central config; note CHROME_BINARY default and HEADLESS/HEADLESS_MODE.
+- scraper.py â€” robust selectors, popup handling, ASP.NET postback, signatureâ€‘guarded pagination.
+- downloader.py/state.py â€” atomic downloads, %PDF- magic, size/type validation, sha256, persistent retry DB.
+- ocr_pipeline.py â€” pypdf textâ€‘first, then OCR via Tesseract/Poppler.
+- pipeline.py â€” stages: scrape, download, ocr, postproc, or all.
+- README.md â€” full pipeline docs, selectors, safeguards, MCP usage, troubleshooting.
+- CHECKPOINT.md â€” this file.
+
+Current defaults
+
+- CHROME_BINARY: C:\users\niyaz\chrome-cft-142.0.7444.162\chrome-win64\chrome.exe
+- BROWSER_HEADLESS: default 1 (can override)
+- HEADLESS_MODE: "new" with automatic fallbacks (new â†’ old â†’ none)
+- MAX_LISTING_PAGES/MAX_LAW_PAGES: 0 (no limit) â€” set during tests to bound pagination
+
+How to run (quick)
+
+1) Visible run (good for first launch + cookie consent):
+   - set BROWSER_HEADLESS=0
+   - python pipeline.py all
+
+2) Headless (if UI confirmed once):
+   - set BROWSER_HEADLESS=1
+   - optional: set HEADLESS_MODE=old
+   - python pipeline.py scrape
+
+3) Staged:
+   - python pipeline.py scrape
+   - python pipeline.py download
+   - python pipeline.py ocr
+   - python pipeline.py postproc
+
+Chrome DevTools MCP
+
+- Installed: chrome-devtools-mcp 0.10.1
+- Configure your MCP client with:
+  command: chrome-devtools-mcp
+  args: ["--executablePath","C:\\users\\niyaz\\chrome-cft-142.0.7444.162\\chrome-win64\\chrome.exe","--isolated","--viewport","1600x1000"]
+- Then "/mcp" should list "chrome-devtools".
+
+Whatâ€™s fixed
+
+- Pagination loops: requires signature change after Next; stops immediately if no change. Optional hard page limits.
+- Download tracking: only verified PDFs are marked success; failed/HTML/zeroâ€‘byte retried across runs.
+- Popups: cookie/consent and alerts dismissed automatically.
+
+Open items / Next steps
+
+- If Selenium still opens to data:, verify CHROME_BINARY path exists and try BROWSER_HEADLESS=0 or HEADLESS_MODE=old.
+- If bot protection blocks extraction, use MCP (real browser) to validate selectors; I can add a Playwright scraper if desired.
+- Optional enhancement: also check a visible page number label change as an extra signal in pagination.
+
+Notes
+
+- All generated artifacts were removed in cleanup; reâ€‘runs will repopulate outputs.
+

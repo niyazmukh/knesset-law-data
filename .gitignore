@@ -1,0 +1,56 @@
+# Python cache / build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.manifest
+*.spec
+
+# Virtual environments
+.env/
+.venv/
+venv/
+ENV/
+
+# IDE / tooling noise
+.vs/
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+pnpm-lock.yaml
+
+# Browser / Selenium profiles
+chrome_profile/
+chrome_profile/**
+
+# Pipeline outputs (non-source data)
+downloaded_pdfs/
+ocr_images/
+ocr_texts/
+postproc_texts/
+downloaded_pdfs.log
+pipeline_state.db*
+scraped_urls_*.txt
+pdf_links_*.txt
+ocr_images_*.zip
+
+# Temporary download and OCR artifacts
+*.part
+*.tmp
+*.cache
+*.log
+*.sqlite
+*.sqlite3
+
+# Misc runtime state
+pip-wheel-metadata/
+pytest_cache/
+.mypy_cache/
+
+# OS crash dumps
+*.stackdump

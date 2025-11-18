@@ -1,0 +1,15 @@
+{
+  "name": "knesset_data",
+  "version": "1.0.0",
+  "description": "Knesset Data Pipeline — Scrape, Download, OCR, Post‑Process",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}
